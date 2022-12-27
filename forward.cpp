@@ -8,14 +8,10 @@ Reference: Andre NG, "Deep Learning Specilization", Coursera
 
 #include <iostream>
 #include <vector>
-#include <iostream>
-#include <vector>
 #include <deque>
 #include <string>
 #include <unordered_map>
-#include <fstream>
-#include <sstream>
-#include<string.h>
+#include <string.h>
 #include <random>
 
 using namespace std;
