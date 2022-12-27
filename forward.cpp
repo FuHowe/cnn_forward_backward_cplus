@@ -17,11 +17,12 @@ Reference: Andre NG, "Deep Learning Specilization", Coursera
 using namespace std;
 typedef vector<vector<vector<vector<float>>>> v4f; //4D vector
 typedef vector<vector<vector<float>>> v3f; //3D vector
-typedef vector<vector<float>> v2f; //3D vector
+typedef vector<vector<float>> v2f; //2D vector
 typedef vector<float> v1f;
 
 class math_operations {
 public:
+    //activation function caller
     v2f activation_wrapper (v2f& Window, string mode) {
         int row = Window.size(), col = Window[0].size ();
         v2f A (row, v1f(col,0));
@@ -35,7 +36,7 @@ public:
             return {{-1},{-1}};
         return A;
     }
-
+    //calculate mean value of a 3D matrix windows 
     float mean_matrix_window (v3f& a_prev_slice, int vert_start, int vert_end, int horiz_start, int horiz_end, int c) {
         float mean_val = 0;
         for (int i = vert_start; i < vert_end; i++) {
@@ -46,7 +47,7 @@ public:
         return mean_val;
     }
 
-    //pad_zero to a 2d array
+    //pad a 2D vector
     void pad_2dArr (deque <deque <float>>& X, int n_pad, float pad_val) {
         int row = X.size(), col = X[0].size();
         /*inputs: n_pad - pad size, X - 2D vector */
@@ -65,7 +66,7 @@ public:
         }
     }
 
-    //matrix element_wise multiply
+    //sum value of matrix element_wise multiply
     float v3f_multiply_element_wise (v3f& M1, v3f& M2) {
         int row = M1.size(), col = M1[0].size(), depth = M1[1].size();
         //v3f M1M2 (row, v2f (col,v1f(depth, 0)));
@@ -77,7 +78,7 @@ public:
         return sum_val;
     }
 
-private:
+private: //activation functions - sigmoid, relu, softmax
     void activation_sigmoid (v2f& Window, int row, int col, v2f& A) {
         for (int i = 0; i < row*col; i++) {
             int x = i / row, y = i % row;
@@ -108,7 +109,7 @@ private:
     }
 };
 
-struct hparameters {    
+struct hparameters {
     int n_pad = 2;
     float pad_val = 0.0;
     int n_batch = 2500;
@@ -127,7 +128,8 @@ public:
         float z = v3f_multiply_element_wise(Slice_window, W);
         return z + b;
     }
-
+    
+    //convolution forward computation
     template <typename T>
     pair <v4f, tuple <v4f, v3f, float, unordered_map <string, T> >> conv_forward(v4f& A_prev, v3f* W, float b, unordered_map <string, T>& hparameters) {
         int  m = A_prev.size(), n_H_prev = A_prev[0].size(), n_W_prev = A_prev[1].size(), n_C_prev = A_prev[2].size();
@@ -171,7 +173,8 @@ public:
         cache = make_tuple(A_prev, W, b, hparameters);
         return make_pair(Z, cache);
     }
-
+    
+    // convolution forward pooling
     template <typename T>
     tuple <v4f, pair<v4f, unordered_map <string, T>> > pool_forward(v4f& A_prev, unordered_map <string, T>& hparameters, string mode, unordered_map <string, v2f>& cache) {
         int m = n_H_prev = n_W_prev = n_C_prev = A_prev.size();
@@ -182,7 +185,7 @@ public:
         int n_W = (int)(1 + (n_W_prev - f) / stride);
         int n_C = n_C_prev;
 
-        //initilize
+        //initilize the 4D vector after pooling
         v4f A = (m, v3f(n_H, v2f(n_W, v1f(n_C, 0))));
         for (int i = 0; i < m; i++) {
             for (int h = 0; h < n_H; h++) {
