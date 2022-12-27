@@ -1,4 +1,4 @@
-/*CNN forward and backward
+/*CNN forward
 Q. Xu, Dec 26, 2022
 Notes:
 1) it is a rapid prototype only with low-level computation without HPC, as an illustration of the computation procedure
