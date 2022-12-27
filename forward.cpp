@@ -111,10 +111,11 @@ private:
 struct hparameters {    
     int n_pad = 2;
     float pad_val = 0.0;
+    int n_batch = 2500;
 };
 
 class forward_cnn : public math_operations {
-    int n_batch = 0;
+    
 public:
     forward_cnn(int batch_size) {
         int n_batch = batch_size;
