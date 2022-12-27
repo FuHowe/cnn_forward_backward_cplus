@@ -1,5 +1,5 @@
 /*CNN forward and backward
-Q. Xu, Dec 25, 2022
+Q. Xu, Dec 26, 2022
 Notes:
 1) it is a rapid prototype only with low-level computation without HPC, as an illustration of the computation procedure
 2) backward portion is being worked on and will be updated ASAP in Jan.
