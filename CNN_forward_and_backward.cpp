@@ -4,7 +4,7 @@ Qinwu Xu, Dec 25, 2022
 
 Notes:
 1) it is a rapid prototype with low-level computation and parallism for CPUs
-Major methods refered to: Andre NG, "Deep Learning Specilization", Coursera
+Major methods refered to: Andre NG, "Deep Learning Specilization" of Coursera
 
 */
 
