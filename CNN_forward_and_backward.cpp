@@ -3,8 +3,10 @@ CNN forward and backward
 Qinwu Xu, Dec 25, 2022
 
 Notes:
-1) it is a rapid prototype with low-level computation and parallism for CPUs
-Major methods refered to: Andre NG, "Deep Learning Specilization", Coursera
+1) the methodology is referred to Andrew NG., Deep Learning Specilization, Coursera, which provided the backbone and framework of incomplete Python code.
+2) the major contribution of this prototype convers:
+  a) it complete the full procedure of CNN for classification and object detection, including the additonal layers of flatten-> fully-connected layers -> classification -> location detection, and data in and results out with the main function; 
+  b) it wrotes in C++ and organized in object oriented and with parallism option for CPUs.
 
 */
 
