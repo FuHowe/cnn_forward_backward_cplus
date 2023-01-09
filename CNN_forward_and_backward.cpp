@@ -1,5 +1,5 @@
 /*
-CNN forward and backward
+CNN forward and backward for classification and object detection
 Qinwu Xu, Dec 25, 2022
 
 Notes:
