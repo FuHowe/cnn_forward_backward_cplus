@@ -4,7 +4,7 @@ Qinwu Xu, Dec 25, 2022
 
 Notes:
 1) it is a rapid prototype with low-level computation and parallism for CPUs
-Major methods refered to: Andre NG, "Deep Learning Specilization" of Coursera
+Major methods refered to: Andre NG, "Deep Learning Specilization", Coursera
 
 */
 
@@ -95,6 +95,28 @@ public:
             sum_val += M1[x][y][z]* M2[x][y][z];
         }
         return sum_val;
+    }
+
+    float v3f_max(v3f& a_prev_slice, int vert_start, int vert_end, int horiz_start, int horiz_end, int c) {
+        float max_val = numeric_limits <float>::min();
+        for (int i = vert_start; i < vert_end; i++) {
+            for (int j = horiz_start; i < horiz_end; j++) {
+                if (a_prev_slice[i][j][c] > max_val) {
+                    max_val = a_prev_slice[i][j][c];
+                }
+            }
+        }
+        return max_val;
+    }
+
+    float v3f_mean(v3f& a_prev_slice, int vert_start, int vert_end, int horiz_start, int horiz_end, int c) {
+        float mean_val = 0;
+        for (int i = vert_start; i < vert_end; i++) {
+            for (int j = horiz_start; i < horiz_end; j++) {
+                mean_val += a_prev_slice[i][j][c];
+            }
+        }
+        return mean_val / ((vert_end - vert_start) * (horiz_end - horiz_start));
     }
 
 private:
@@ -197,28 +219,6 @@ public:
         return make_pair (Z, cache);
     }
 
-    float v3f_max(v3f& a_prev_slice, int vert_start, int vert_end, int horiz_start, int horiz_end, int c) {
-        float max_val = numeric_limits <float>::min ();
-            for (int i = vert_start; i < vert_end; i++) {
-                for (int j = horiz_start; i < horiz_end; j++) {
-                    if (a_prev_slice[i][j][c] > max_val) {
-                        max_val = a_prev_slice[i][j][c];
-                    }
-                }
-            }
-        return max_val;
-    }
-
-    float v3f_mean (v3f& a_prev_slice, int vert_start, int vert_end, int horiz_start, int horiz_end, int c) {
-        float mean_val = 0;
-            for (int i = vert_start; i < vert_end; i++) {
-                for (int j = horiz_start; i < horiz_end; j++) {
-                    mean_val += a_prev_slice[i][j][c];
-                    }
-                }
-        return mean_val/((vert_end - vert_start)*(horiz_end - horiz_start));
-    }
-    template <typename T>
     tuple <v4f, pair<v4f, unordered_map <string, T>> > pool_forward (v4f& A_prev, unordered_map <string, T>& hparameters, string mode, unordered_map <string, v2f>& cache) {
         int m = A_prev.size(), n_H_prev = A_prev[0].size(), n_W_prev = A_prev[1].size(), n_C_prev = A_prev[2].size();        
         int f = hparameters["f"];
@@ -243,7 +243,7 @@ public:
                             A[i][h][w][c] = v3f_max (a_prev_slice, vert_start, vert_end, horiz_start, horiz_end, c);
                         }
                         else if (mode == "average") {
-                            A[i, h, w, c] = v3f_mean (a_prev_slice, vert_start, vert_end, horiz_start, horiz_end, c);
+                            A[i][h][w][c] = v3f_mean (a_prev_slice, vert_start, vert_end, horiz_start, horiz_end, c);
                         }
                     }
                 }
@@ -254,7 +254,117 @@ public:
             cout << "Error: size of A doesn't match expected" << endl;
         return make_tuple (A, cache);
     }
+
+    v1f sigmoid (float Z, int n) {
+        v1f A(n, 0);
+        for (int i = 0; i < n; i++) {
+            A[i] = 1 / (1 + exp(-Z[i]));
+        }
+        return A;
+    }
+
+    float relu (float Z, int n) {
+        v1f A(n, 0);
+        for (int i = 0; i < n; i++) {
+            A[i] = Z[i] > 0 ? z : 0;
+        }
+    }
+
+    v1f softmax (float Z, int n) {
+        v1f A(n, 0);
+        float sum_val = 0;
+        for (int i = 0; i < n; i++) {
+            A[i] = exp(Z[i]);
+            sum_val += A[i];
+        }
+        for (int i = 0; i < n; i++) {
+            A[i] /= sum_val;
+        }
+        return A[i];
+    }
+ 
+    v4f conv_activation (v4f & Z, string activation_mode) {
+        int  m = Z.size(), n_H = Z [0].size(), n_W = Z[1].size(), n_C = Z[2].size();
+        v4f A (m, v3f(n_H, v2f(n_W, v1f(n_C, 0))));
+        
+        #pragma omp parallel for
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n_h *n_ w; j++)  {
+                int h = j / n_h, w = j% n_h;
+                    if (activation_mode == "sigmoid") 
+                        A [i][h][w] = sigmoid (Z[i][h][w], n_C);
+                    else if (activation_mode == "relu")
+                        A [i][h][w] = relu (Z[i][h][w], n_C);
+            }
+        }
+        return A;
+    }
+
+    v2f flatten (v4f A) {
+        int  m = Z.size(), n_H = Z[0].size(), n_W = Z[1].size(), n_C = Z[2].size(); 
+        int v_size = n_H * n_w * n_C;
+        v2f flat_layer = (m, v1f ()); //flatten vector, size: m by v_size
+        for (int i = 0; i < m; i++) {
+            for (int h = 0; h < n_H; h++) {
+                for (int w = 0; w < n_W; w++) {
+                    for (int c = 0; c < n_C; c++) {
+                        int k = h*w*c;
+                        flat_layer[m][k] = A[i][h][w][c];
+                    }
+                }
+            }
+        }
+        return flat_layer;
+    }
+
+    v2f fully_connected (v2f flat_layer, v2f W, int n_out) {
+        /* inputs: flat_layer - flatten layer, n_out: output size for each sample
+        output: 
+        */          
+        int  m = flat_layer.size(), n_in = flat_layer[0].size(); 
+        int n_in = W.size(), n_out = -W[0].size();
+
+        int v_size = n_H * n_w * n_C;
+        v2f fc = (m, v1f(n_out, 0)); //flatten vector, size: m by v_size
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n_out; j++) {
+                for (int k = 0; w < n_in; k++) {
+                    fc[i][j] += flat_layer [i][k]* W[j][k];
+                }
+            }
+        }
+        return fc;
+    }
+
+    float loss (v2f & FC_final, string loss_mode, v1f & y_truth) {
+        //FC_final: final layer of fully connected layer(s), size: m (batch size) by n_class (number of classification, 2 for binary)
+        int m = FC_final.size(), n_class = FC_finaled [0].size();
+        if (y_truth.size() != m)
+            cout << "Error: number of samples doens't match the expected" << endl;
+        else if (y_truth[10].size() != n_class)
+            cout << "Error: number of classification doens't match the expected" << endl;
+
+        float Loss = 0; 
+        for (int i = 0; i < m; i++) {
+            if (loss_model = "ce") { //cross_entropy, e.g., for multi-class multi-label problem
+                for (int j = 0; j < n_out; j++) {
+                    Loss += = -y_truth[i][j] * log(FC_final[i][j]);
+                }
+            }
+            else if (loss_model = "soft_max") { //softmax + cross_entropy, e.g. for multi-class single-label problem
+                v2f FC_final_sm = softmax (FC_final, n_class);
+                for (int j = 0; j < n_out; j++) {
+                    Loss += -y_truth[i][j] * log(FC_final_sm [i][j]);
+                }
+            }
+            else if (loss_model = "bce") { //binary cross entropy, e.g. for binary-class single-label problem
+                Loss += = -y_truth[i][j] * log(FC_final[i][j]) - (1.0 - y_truth[i][j]) * log(1.0 - FC_final[i][j]);
+            }
+        }
+        return Loss;
+    }
 };
+
 
 template <typename T>
 class conv_backward_computation : public math_operations {
