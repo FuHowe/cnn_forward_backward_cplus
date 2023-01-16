@@ -11,9 +11,6 @@ Notes:
      (3) Class: backward computation;
      (4) main: read data in, train the model and output prediction results.
 
-Forward computation flowchart
-![image](https://user-images.githubusercontent.com/78186650/211235835-e9a197f7-f367-45c7-b364-ce29ae79dbe2.png)
+![image](https://user-images.githubusercontent.com/78186650/212701507-6e3d0643-3343-4e0b-b2a6-7903875ad8d2.png)
 
-![image](https://user-images.githubusercontent.com/78186650/212700656-2442f76c-f826-4fc6-acfe-349b1ac6d15c.png)
-![image](https://user-images.githubusercontent.com/78186650/212700984-d8a66097-252f-4d67-9e73-89aab12b9ccf.png)
-![image](https://user-images.githubusercontent.com/78186650/212701050-6f70e930-6125-4751-9f50-7efeaee4dd64.png)
+
