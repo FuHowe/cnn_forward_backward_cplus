@@ -14,4 +14,4 @@ Notes:
 Forward computation flowchart
 ![image](https://user-images.githubusercontent.com/78186650/211235835-e9a197f7-f367-45c7-b364-ce29ae79dbe2.png)
 
-1st CNN block: -> $$Z_1=W_1 X$ -> A_1=σ(Z_1) -> Pooling (max or average)
+1st CNN block: -> $Z_1=W_1 X$ -> $A_1=σ(Z_1)$ -> Pooling (max or average)
