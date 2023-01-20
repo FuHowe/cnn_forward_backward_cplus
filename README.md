@@ -13,6 +13,9 @@ Notes:
 
 ![image](https://user-images.githubusercontent.com/78186650/212702824-d621ca39-5b29-4632-8095-28e5c6fbf079.png)
 
+Forward and backward computation formulates step by step
+![image](https://user-images.githubusercontent.com/78186650/213824970-4dd09629-2c79-4a9e-b14e-d1fe87f1c664.png)
+
 
 
 
