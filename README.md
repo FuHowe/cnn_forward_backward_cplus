@@ -1,5 +1,6 @@
 
-# A prototype of cnn forward and backward computtions for classification problem and coding in C++
+# A prototype of cnn forward and backward computtions for classification problem and coding in C++.
+Qinwu Xu (Jan 2023) https://github.com/qinwuxutexas/cnn_forward_backward_cplus/edit/main/
 
 Notes:
 1) the methodology is referred to Andrew NG., Deep Learning Specilization, Coursera, which provided the backbone and framework of incomplete Python code.
