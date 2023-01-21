@@ -1,5 +1,5 @@
 
-# A prototype for cnn_forward_backward for classification and object localization in C++
+# A prototype of cnn forward and backward computtions for classification problem and coding in C++
 
 Notes:
 1) the methodology is referred to Andrew NG., Deep Learning Specilization, Coursera, which provided the backbone and framework of incomplete Python code.
