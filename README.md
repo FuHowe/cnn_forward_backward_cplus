@@ -12,7 +12,7 @@ Notes:
      (3) Class: backward computation;
      (4) main: read data in, train the model and output prediction results.
 
-![image](https://user-images.githubusercontent.com/78186650/214993537-1cdd11e4-f2f5-4235-9692-34fe38b32a17.png)
+![image](https://user-images.githubusercontent.com/78186650/214993639-b96f86d7-9272-4340-8f85-480b293ed55a.png)
 
 **Forward and backward computation formulates step by step**
 ![image](https://user-images.githubusercontent.com/78186650/213961821-b5f18c21-f28d-4d2b-83ae-a886b0d20361.png)
