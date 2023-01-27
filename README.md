@@ -15,7 +15,7 @@ Notes:
 ![image](https://user-images.githubusercontent.com/78186650/214993639-b96f86d7-9272-4340-8f85-480b293ed55a.png)
 
 **Forward and backward computation formulates step by step**
-![image](https://user-images.githubusercontent.com/78186650/213961821-b5f18c21-f28d-4d2b-83ae-a886b0d20361.png)
+![image](https://user-images.githubusercontent.com/78186650/214994307-706e989b-873b-47db-9a2e-977ca04d119e.png)
 **Architecture and software design**
 ![image](https://user-images.githubusercontent.com/78186650/213967240-3339238f-82d4-4f31-b886-27040910c5e9.png)
 
