@@ -3,14 +3,13 @@
 Qinwu Xu (Jan 2023) https://github.com/qinwuxutexas/cnn_forward_backward_cplus
 
 Notes:
-1) the methodology is referred to Andrew NG., Deep Learning Specilization, Coursera, which provided the backbone and framework of incomplete Python code.
-2) the major contribution of this prototype convers:
-  a) it complete the full procedure of CNN for classification and object detection, including the additonal layers of flatten-> fully-connected layers -> classification -> location detection, and data in and results out with the main function; 
-  b) it wrotes in C++ and with parallism option for CPUs. It is designed in object oriented with three classes and one main function: 
+the major contribution of this prototype covers the following:
+  a) it derives the full procedure of CNN framework for classification problems and object detection, including the additonal feed forward layers: flatten-> fully-connected layers -> classification -> object location detection; 
+  b) it was written in C++ with parallism options for CPUs. The  architecture is designed as object oriented with three classes and one main function: 
      (1) class: math operation; 
      (2) class: forward computation;
      (3) Class: backward computation;
-     (4) main: read data in, train the model and output prediction results.
+     (4) main: read data in, train the model, and inference results.
 
 ![image](https://user-images.githubusercontent.com/78186650/214994593-c41856f5-1714-4ea5-a288-2ba68a8218ee.png)
 
